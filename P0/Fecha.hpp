@@ -13,23 +13,47 @@ public:
 
     /* CONSTRUCTORES */
     Fecha(int d = 0, int m = 0, int a = 0);
-    Fecha(const Fecha &A);
-    Fecha(std::string cad);
+    Fecha(char *cad);
+
+    void imprimir();
+
+    /* METODOS PUBLICOS */
+    int dia() const { return dia_; };
+    int mes() const { return mes_; };
+    int anno() const { return anno_; };
+    Fecha& operator+=(int n);
+    Fecha& operator-=(int n);
+    Fecha& operator++();
+    Fecha& operator++(int);
+    Fecha& operator--();
+    Fecha& operator--(int);
+
+    /* AMIGOS DE LA CLASE */
+    friend Fecha& operator+(Fecha A, int n);
+    friend Fecha& operator-(Fecha A, int n);
 
 private:
     int dia_,
         mes_,
         anno_;
-    void validar();
+    void validar() const;
+    void aumentar_dias(int n);
 };
+bool operator>(const Fecha& A, const Fecha& B);
+bool operator<(const Fecha& A, const Fecha& B);
+bool operator>=(const Fecha& A, const Fecha& B);
+bool operator<=(const Fecha& A, const Fecha& B);
+bool operator==(const Fecha& A, const Fecha& B);
+bool operator!=(const Fecha& A, const Fecha& B);
 
 class Fecha::Invalida
 {
-private:
-    std::string por_que() const;
-
 public:
-    std::string error;
+    Invalida(char *cad);
+    char * por_que() const;
+
+private:
+    char *error;
 };
 
 #endif
