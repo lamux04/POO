@@ -1,6 +1,8 @@
 #include <string>
 #include <iostream>
+#include <stddef.h>
 #include "Fecha.hpp"
+#include "Cadena.hpp"
 
 int main()
 {
