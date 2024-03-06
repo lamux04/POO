@@ -15,7 +15,7 @@ public:
     Fecha(int d = 0, int m = 0, int a = 0);
     Fecha(char *cad);
 
-    void imprimir();
+    operator const char* () const;
 
     /* METODOS PUBLICOS */
     int dia() const { return dia_; };
@@ -36,6 +36,8 @@ private:
     int dia_,
         mes_,
         anno_;
+    mutable char crep[40];
+    mutable bool actual;
     void validar() const;
     void aumentar_dias(int n);
 };

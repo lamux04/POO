@@ -1,4 +1,4 @@
-#include <string>
+#include <string.h>
 #include <ctime>
 #include <stdio.h>
 #include <iostream>
@@ -161,10 +161,53 @@ bool operator>=(const Fecha& A, const Fecha& B)
     return !(A < B);
 }
 
-void Fecha::imprimir()
+Fecha::operator const char* () const
 {
-    std::cout << dia_ << "/" << mes_ << "/" << anno_ << "/" << std::endl;
+    if (!actual)
+    {
+        char *dia[] = {
+            "domingo",
+            "lunes",
+            "martes",
+            "miércoles",
+            "jueves",
+            "viernes",
+            "sábado"
+        };
+
+        char *mes[] = {
+            "enero",
+            "febrero",
+            "marzo",
+            "abril",
+            "mayo",
+            "junio",
+            "julio",
+            "agosto",
+            "septiembre",
+            "octubre",
+            "noviembre",
+            "diciembre"
+        };
+
+        struct std::tm * nuevo_tm = new std::tm;
+
+        nuevo_tm->tm_sec = 0;    // Segundos
+        nuevo_tm->tm_min = 0;    // Minutos
+        nuevo_tm->tm_hour = 0;   // Horas
+        nuevo_tm->tm_mday = dia_;
+        nuevo_tm->tm_mon = mes_ - 1;
+        nuevo_tm->tm_year = anno_ - 1900;
+
+        std::time_t tiempo = mktime(nuevo_tm);
+
+        sprintf(crep, "%s %i de %s de %i", dia[nuevo_tm->tm_wday], dia_, mes[mes_ - 1], anno_);
+        actual = true;
+    }
+
+    return crep;
 }
+
 
 // Post: Comprueba que los datos del parametro implicito this sean correctos. Si no lo son lanza un error.
 void Fecha::validar() const
