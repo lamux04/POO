@@ -12,7 +12,7 @@ public:
     static const int AnnoMinimo;
 
     /* CONSTRUCTORES */
-    Fecha(int d = 0, int m = 0, int a = 0);
+    explicit Fecha(int d = 0, int m = 0, int a = 0);
     Fecha(char *cad);
 
     operator const char* () const;

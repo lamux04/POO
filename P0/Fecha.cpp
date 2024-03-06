@@ -12,7 +12,7 @@ const int Fecha::AnnoMinimo(1902);
 
 
 // Los parametros por defecto solo en la definicion
-Fecha::Fecha(int d /* = 0 */, int m /* = 0 */, int a /* = 0 */) : dia_(d), mes_(m), anno_(a)
+Fecha::Fecha(int d /* = 0 */, int m /* = 0 */, int a /* = 0 */) : dia_(d), mes_(m), anno_(a), actual(false)
 {
     if (d != 0 && m != 0 && a != 0)
         validar();
@@ -32,7 +32,7 @@ Fecha::Fecha(int d /* = 0 */, int m /* = 0 */, int a /* = 0 */) : dia_(d), mes_(
 }
 
 
-Fecha::Fecha(char *cad) : dia_(0), mes_(0), anno_(0)
+Fecha::Fecha(char *cad) : dia_(0), mes_(0), anno_(0), actual(false)
 {
     sscanf(cad, "%d/%d/%d", &dia_, &mes_, &anno_);
 
@@ -73,6 +73,7 @@ typename Fecha::Fecha& Fecha::operator+=(int n)
 {
     aumentar_dias(n);
     validar();
+    actual = false;
     return *this;
 }
 
@@ -80,6 +81,7 @@ typename Fecha::Fecha& Fecha::operator-=(int n)
 {
     aumentar_dias(-n);
     validar();
+    actual = false;
     return *this;
 }
 
@@ -87,6 +89,7 @@ typename Fecha::Fecha& Fecha::operator++()
 {
     aumentar_dias(1);
     validar();
+    actual = false;
     return *this;
 }
 
@@ -95,6 +98,7 @@ typename Fecha::Fecha& Fecha::operator++(int)
     Fecha copia{ *this };
     aumentar_dias(1);
     validar();
+    actual = false;
     return copia;
 }
 
@@ -102,6 +106,7 @@ typename Fecha::Fecha& Fecha::operator--()
 {
     aumentar_dias(-1);
     validar();
+    actual = false;
     return *this;
 }
 
@@ -110,6 +115,7 @@ typename Fecha::Fecha& Fecha::operator--(int)
     Fecha copia{ *this };
     aumentar_dias(-1);
     validar();
+    actual = false;
     return copia;
 }
 

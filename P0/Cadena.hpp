@@ -5,7 +5,7 @@ class Cadena
 {
 public:
     /* CONSTRUCTORES */
-    Cadena(size_t n = 0, char c = ' ');
+    explicit Cadena(size_t n = 0, char c = ' ');
     Cadena(const char *cad);
     Cadena(const Cadena& A);
 
@@ -13,6 +13,9 @@ public:
     size_t length() const { return tam_; }
     size_t at(size_t i) const;
     Cadena substr(size_t indice, size_t tama) const;
+
+    /* OPERADORES DE CONVERSION */
+    explicit operator const char*() const;
 
     /* OPERADORES */
     Cadena& operator=(const Cadena& A);
@@ -22,7 +25,7 @@ public:
     char& operator[](size_t i);
 
     /* DESTRUCTOR */
-    ~Cadena();
+    ~Cadena() { delete[] s_; }
 
     /* FUNCIONES AMIGAS */
     friend Cadena& operator+(const Cadena& A, const Cadena& B);
@@ -34,7 +37,7 @@ public:
     friend bool operator<=(const Cadena& A, const Cadena& B);
 
 private:
-    char vacia[1];
+    static const char vacia[1];
     size_t tam_;
     char *s_;
 };
