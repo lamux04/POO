@@ -13,7 +13,7 @@ public:
     size_t length() const { return tam_; }
     char at(size_t i) const;
     char& at(size_t i);
-    Cadena substr(size_t indice, size_t tama) const;
+    Cadena substr(int indice, int tama) const;
 
     /* OPERADORES DE CONVERSION */
     explicit operator const char*() const;

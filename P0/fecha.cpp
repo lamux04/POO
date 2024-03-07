@@ -119,15 +119,17 @@ typename Fecha::Fecha& Fecha::operator--(int)
     return copia;
 }
 
-Fecha& operator+(Fecha A, int n)
+Fecha Fecha::operator+(int n) const
 {
+    Fecha A(*this);
     A.aumentar_dias(n);
     A.validar();
     return A;
 }
 
-Fecha& operator-(Fecha A, int n)
+Fecha Fecha::operator-(int n) const
 {
+    Fecha A(*this);
     A.aumentar_dias(-n);
     A.validar();
     return A;

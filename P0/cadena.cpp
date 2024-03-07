@@ -127,11 +127,11 @@ char& Cadena::at(size_t i)
     return s_[i];
 }
 
-Cadena Cadena::substr(size_t indice, size_t tama) const
+Cadena Cadena::substr(int indice, int tama) const
 {
     if (indice < 0 || indice >= tam_)
         throw new std::out_of_range("El índice no es válido");
-    if (tama + indice - 1 >= tam_)
+    if (tama < 0 || tama + indice - 1 >= tam_)
         throw new std::out_of_range("El tamaño está fuera de rango");
     Cadena A(tama, ' ');
     for (size_t i = 0; i < tama; ++indice, ++i)

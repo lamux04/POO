@@ -28,9 +28,8 @@ public:
     Fecha& operator--();
     Fecha& operator--(int);
 
-    /* AMIGOS DE LA CLASE */
-    friend Fecha& operator+(Fecha A, int n);
-    friend Fecha& operator-(Fecha A, int n);
+    Fecha operator+(int n) const;
+    Fecha operator-(int n) const;
 
 private:
     int dia_,
