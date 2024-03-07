@@ -3,7 +3,7 @@
 #include <stdio.h>
 #include <iostream>
 
-#include "Fecha.hpp"
+#include "fecha.hpp"
 
 // Declaracion constantes
 const int Fecha::AnnoMaximo(2037);

@@ -1,5 +1,5 @@
-#ifndef CADENA_HPP
-#define CADENA_HPP
+#ifndef CADENA_HPP_
+#define CADENA_HPP_
 
 class Cadena
 {
@@ -29,7 +29,7 @@ public:
     ~Cadena() { delete[] s_; }
 
     /* FUNCIONES AMIGAS */
-    friend Cadena& operator+(const Cadena& A, const Cadena& B);
+    friend Cadena operator+(const Cadena& A, const Cadena& B);
     friend bool operator>(const Cadena& A, const Cadena& B);
     friend bool operator<(const Cadena& A, const Cadena& B);
     friend bool operator==(const Cadena& A, const Cadena& B);

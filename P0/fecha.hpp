@@ -1,5 +1,5 @@
-#ifndef FECHA_HPP
-#define FECHA_HPP
+#ifndef FECHA_HPP_
+#define FECHA_HPP_
 
 class Fecha
 {

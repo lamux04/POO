@@ -2,7 +2,7 @@
 #include <string.h>
 #include <stdexcept>
 
-#include "Cadena.hpp"
+#include "cadena.hpp"
 
 const char vacia{ '\0' };
 
@@ -58,21 +58,19 @@ Cadena& Cadena::operator+=(const Cadena& A)
 {
     char *t = s_;
     int tam = tam_ + A.tam_;
-    s_ = new char[tam_ + 1];
+    s_ = new char[tam + 1];
     strcpy(s_, t);
     strcat(s_, A.s_);
     delete[] t;
+    tam_ = tam;
 
     return *this;
 }
 
-Cadena& operator+(const Cadena& A, const Cadena& B)
+Cadena operator+(const Cadena& A, const Cadena& B)
 {
-    Cadena res;
-    res.s_ = new char[A.tam_ + B.tam_ + 1];
-    strcpy(res.s_, A.s_);
-    strcat(res.s_, B.s_);
-    res.tam_ = A.tam_ + B.tam_;
+    Cadena res(A);
+    res += B;
     return res;
 }
 
@@ -118,14 +116,14 @@ char& Cadena::operator[](size_t i)
 char Cadena::at(size_t i) const
 {
     if (i < 0 || i >= tam_)
-        throw new std::out_of_range("El índice no es válido");
+        throw std::out_of_range("El índice no es válido");
     return s_[i];
 }
 
 char& Cadena::at(size_t i)
 {
     if (i < 0 || i >= tam_)
-        throw new std::out_of_range("El índice no es válido");
+        throw std::out_of_range("El índice no es válido");
     return s_[i];
 }
 
@@ -135,5 +133,9 @@ Cadena Cadena::substr(size_t indice, size_t tama) const
         throw new std::out_of_range("El índice no es válido");
     if (tama + indice - 1 >= tam_)
         throw new std::out_of_range("El tamaño está fuera de rango");
-    Cadena A;
+    Cadena A(tama, ' ');
+    for (size_t i = 0; i < tama; ++indice, ++i)
+        A.s_[i] = s_[indice];
+
+    return A;
 }
