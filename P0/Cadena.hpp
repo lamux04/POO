@@ -11,7 +11,8 @@ public:
 
     /* METODOS PUBLICOS */
     size_t length() const { return tam_; }
-    size_t at(size_t i) const;
+    char at(size_t i) const;
+    char& at(size_t i);
     Cadena substr(size_t indice, size_t tama) const;
 
     /* OPERADORES DE CONVERSION */

@@ -1,5 +1,6 @@
 #include <stddef.h>
 #include <string.h>
+#include <stdexcept>
 
 #include "Cadena.hpp"
 
@@ -103,4 +104,36 @@ bool operator>=(const Cadena& A, const Cadena& B)
 bool operator<=(const Cadena& A, const Cadena& B)
 {
     return !(B < A);
+}
+
+char Cadena::operator[](size_t i) const
+{
+    return s_[i];
+}
+char& Cadena::operator[](size_t i)
+{
+    return s_[i];
+}
+
+char Cadena::at(size_t i) const
+{
+    if (i < 0 || i >= tam_)
+        throw new std::out_of_range("El índice no es válido");
+    return s_[i];
+}
+
+char& Cadena::at(size_t i)
+{
+    if (i < 0 || i >= tam_)
+        throw new std::out_of_range("El índice no es válido");
+    return s_[i];
+}
+
+Cadena Cadena::substr(size_t indice, size_t tama) const
+{
+    if (indice < 0 || indice >= tam_)
+        throw new std::out_of_range("El índice no es válido");
+    if (tama + indice - 1 >= tam_)
+        throw new std::out_of_range("El tamaño está fuera de rango");
+    Cadena A;
 }
