@@ -8,7 +8,8 @@
 int main()
 {
     using namespace std;
-    Cadena s1(20, '['), s2(20, ']'),
-        c1(" !Bravo "), c2("a "), c3("todos "),
-        s = s1 + c1;
+    const Fecha f(3, 3, 2024);
+    const Fecha g((f.operator -(5)));
+    cout << g;
+
 }

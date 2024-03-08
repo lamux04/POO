@@ -4,7 +4,7 @@
 
 #include "cadena.hpp"
 
-const char vacia{ '\0' };
+const char Cadena::vacia[1] = "";
 
 Cadena::Cadena(size_t n /* = 0 */, char c /* = ' ' */) : tam_(n), s_(new char[n + 1])
 {
@@ -42,15 +42,19 @@ Cadena& Cadena::operator=(const char *A)
 {
     char *t = s_;
     int tam = strlen(A);
-    s_ = new char[tam + 1];
-    strcpy(s_, A);
+    if (strcmp(A, s_) != 0)
+    {
+        s_ = new char[tam + 1];
+        strcpy(s_, A);
+        delete[] t;
+    }
     tam_ = tam;
-    delete[] t;
     return *this;
 }
 
 Cadena::operator const char*() const
 {
+    if (tam_ == 0) return vacia;
     return s_;
 }
 
@@ -130,9 +134,9 @@ char& Cadena::at(size_t i)
 Cadena Cadena::substr(int indice, int tama) const
 {
     if (indice < 0 || indice >= tam_)
-        throw new std::out_of_range("El índice no es válido");
+        throw std::out_of_range("El índice no es válido");
     if (tama < 0 || tama + indice - 1 >= tam_)
-        throw new std::out_of_range("El tamaño está fuera de rango");
+        throw std::out_of_range("El tamaño está fuera de rango");
     Cadena A(tama, ' ');
     for (size_t i = 0; i < tama; ++indice, ++i)
         A.s_[i] = s_[indice];

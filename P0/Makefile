@@ -184,6 +184,12 @@ ${NOMBRETAR}:
 
 # Muestra la ayuda.
 
+main.o: main.cpp fecha.hpp cadena.hpp
+	$(CXX) -c main.cpp
+
+prueba: fecha.o cadena.o main.o
+	$(CXX) -o prueba fecha.o cadena.o main.o
+
 help:
 	echo "make [all]          -- Construye los programas de prueba"
 	echo "make tests          -- Construye y ejecuta los programas de prueba"

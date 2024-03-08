@@ -34,7 +34,9 @@ Fecha::Fecha(int d /* = 0 */, int m /* = 0 */, int a /* = 0 */) : dia_(d), mes_(
 
 Fecha::Fecha(char *cad) : dia_(0), mes_(0), anno_(0), actual(false)
 {
+    dia_ = -1; mes_ = -1; anno_ = -1;
     sscanf(cad, "%d/%d/%d", &dia_, &mes_, &anno_);
+
 
     // Calculamos el tiempo del sistema
     std::time_t tiempo_calendario = std::time(nullptr);
