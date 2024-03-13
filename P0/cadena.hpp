@@ -29,18 +29,18 @@ public:
     ~Cadena() { delete[] s_; }
 
     /* FUNCIONES AMIGAS */
-    friend Cadena operator+(const Cadena& A, const Cadena& B);
-    friend bool operator>(const Cadena& A, const Cadena& B);
     friend bool operator<(const Cadena& A, const Cadena& B);
     friend bool operator==(const Cadena& A, const Cadena& B);
-    friend bool operator!=(const Cadena& A, const Cadena& B);
-    friend bool operator>=(const Cadena& A, const Cadena& B);
-    friend bool operator<=(const Cadena& A, const Cadena& B);
 
 private:
     static const char vacia[1];
     size_t tam_;
     char *s_;
 };
+bool operator>(const Cadena& A, const Cadena& B);
+Cadena operator+(const Cadena& A, const Cadena& B);
+bool operator!=(const Cadena& A, const Cadena& B);
+bool operator>=(const Cadena& A, const Cadena& B);
+bool operator<=(const Cadena& A, const Cadena& B);
 
 #endif

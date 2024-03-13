@@ -1,7 +1,5 @@
-#include <string.h>
 #include <ctime>
 #include <stdio.h>
-#include <iostream>
 
 #include "fecha.hpp"
 
@@ -57,18 +55,17 @@ void Fecha::aumentar_dias(int n)
     nuevo_tm.tm_sec = 0;    // Segundos
     nuevo_tm.tm_min = 0;    // Minutos
     nuevo_tm.tm_hour = 0;   // Horas
-    nuevo_tm.tm_mday = dia_;
+    nuevo_tm.tm_mday = dia_ + n;
     nuevo_tm.tm_mon = mes_ - 1;
     nuevo_tm.tm_year = anno_ - 1900;
 
-    std::time_t tiempo;
-    tiempo = mktime(&nuevo_tm); // Normalizamos la fecha
-    tiempo += 60 * 60 * 24 * n;
-    std::tm *fecha_normalizada = std::localtime(&tiempo);
+    mktime(&nuevo_tm); // Normalizamos la fecha
+    // tiempo += 60 * 60 * 24 * (n + 1);
+    // std::tm *fecha_normalizada = std::localtime(&tiempo);
 
-    dia_ = fecha_normalizada->tm_mday;
-    mes_ = fecha_normalizada->tm_mon + 1;
-    anno_ = fecha_normalizada->tm_year + 1900;
+    dia_ = nuevo_tm.tm_mday;
+    mes_ = nuevo_tm.tm_mon + 1;
+    anno_ = nuevo_tm.tm_year + 1900;
 }
 
 typename Fecha::Fecha& Fecha::operator+=(int n)
@@ -81,7 +78,7 @@ typename Fecha::Fecha& Fecha::operator+=(int n)
 
 typename Fecha::Fecha& Fecha::operator-=(int n)
 {
-    aumentar_dias(-n);
+    *this += -n;
     validar();
     actual = false;
     return *this;
@@ -89,7 +86,7 @@ typename Fecha::Fecha& Fecha::operator-=(int n)
 
 typename Fecha::Fecha& Fecha::operator++()
 {
-    aumentar_dias(1);
+    *this += 1;
     validar();
     actual = false;
     return *this;
@@ -98,7 +95,7 @@ typename Fecha::Fecha& Fecha::operator++()
 typename Fecha::Fecha& Fecha::operator++(int)
 {
     Fecha copia{ *this };
-    aumentar_dias(1);
+    *this += 1;
     validar();
     actual = false;
     return copia;
@@ -106,7 +103,7 @@ typename Fecha::Fecha& Fecha::operator++(int)
 
 typename Fecha::Fecha& Fecha::operator--()
 {
-    aumentar_dias(-1);
+    *this += -1;
     validar();
     actual = false;
     return *this;
@@ -115,7 +112,7 @@ typename Fecha::Fecha& Fecha::operator--()
 typename Fecha::Fecha& Fecha::operator--(int)
 {
     Fecha copia{ *this };
-    aumentar_dias(-1);
+    *this += -1;
     validar();
     actual = false;
     return copia;
@@ -124,7 +121,7 @@ typename Fecha::Fecha& Fecha::operator--(int)
 Fecha Fecha::operator+(int n) const
 {
     Fecha A(*this);
-    A.aumentar_dias(n);
+    A += n;
     A.validar();
     return A;
 }
@@ -132,23 +129,23 @@ Fecha Fecha::operator+(int n) const
 Fecha Fecha::operator-(int n) const
 {
     Fecha A(*this);
-    A.aumentar_dias(-n);
+    A += -n;
     A.validar();
     return A;
 }
 
 bool operator<(const Fecha& A, const Fecha& B)
 {
-    if (A.anno() != B.anno()) return A.anno() < B.anno();
-    else if (A.mes() != B.mes()) return A.mes() < B.mes();
-    else return A.dia() < B.dia();
+    if (A.anno_ != B.anno_) return A.anno_ < B.anno_;
+    else if (A.mes_ != B.mes_) return A.mes_ < B.mes_;
+    else return A.dia_ < B.dia_;
 }
 
 bool operator==(const Fecha& A, const Fecha& B)
 {
-    if (A.anno() != B.anno()) return false;
-    else if (A.mes() != B.mes()) return false;
-    else return A.dia() == B.dia();
+    if (A.anno_ != B.anno_) return false;
+    else if (A.mes_ != B.mes_) return false;
+    else return A.dia_ == B.dia_;
 }
 
 bool operator>(const Fecha& A, const Fecha& B)

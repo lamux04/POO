@@ -128,6 +128,7 @@
     "bitset": "cpp",
     "set": "cpp",
     "regex": "cpp",
-    "future": "cpp"
-}
+    "future": "cpp",
+    "any": "cpp"
+  }
 }
