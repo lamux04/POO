@@ -5,12 +5,12 @@ class Cadena
 {
 public:
     /* CONSTRUCTORES */
-    explicit Cadena(size_t n = 0, char c = ' ');
+    explicit Cadena(size_t n = 0, char c = ' ') noexcept;
     Cadena(const char *cad);
     Cadena(const Cadena& A);
 
     /* METODOS PUBLICOS */
-    size_t length() const { return tam_; }
+    size_t length() const noexcept { return tam_; }
     char at(size_t i) const;
     char& at(size_t i);
     Cadena substr(int indice, int tama) const;
@@ -22,23 +22,23 @@ public:
     Cadena& operator=(const Cadena& A);
     Cadena& operator=(const char *A);
     Cadena& operator+=(const Cadena& A);
-    char operator[](size_t i) const;
-    char& operator[](size_t i);
+    char operator[](size_t i) const noexcept;
+    char& operator[](size_t i) noexcept;
 
     /* DESTRUCTOR */
-    ~Cadena() { delete[] s_; }
+    ~Cadena() { if (s_ != vacia) delete[] s_; }
 
     /* FUNCIONES AMIGAS */
-    friend bool operator<(const Cadena& A, const Cadena& B);
-    friend bool operator==(const Cadena& A, const Cadena& B);
 
 private:
-    static const char vacia[1];
+    static char vacia[1];
     size_t tam_;
     char *s_;
 };
-bool operator>(const Cadena& A, const Cadena& B);
+bool operator<(const Cadena& A, const Cadena& B);
+bool operator==(const Cadena& A, const Cadena& B);
 Cadena operator+(const Cadena& A, const Cadena& B);
+bool operator>(const Cadena& A, const Cadena& B);
 bool operator!=(const Cadena& A, const Cadena& B);
 bool operator>=(const Cadena& A, const Cadena& B);
 bool operator<=(const Cadena& A, const Cadena& B);

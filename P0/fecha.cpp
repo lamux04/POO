@@ -1,5 +1,5 @@
 #include <ctime>
-#include <stdio.h>
+#include <cstdio>
 
 #include "fecha.hpp"
 
@@ -7,12 +7,10 @@
 const int Fecha::AnnoMaximo(2037);
 const int Fecha::AnnoMinimo(1902);
 
-
-
 // Los parametros por defecto solo en la definicion
 Fecha::Fecha(int d /* = 0 */, int m /* = 0 */, int a /* = 0 */) : dia_(d), mes_(m), anno_(a), actual(false)
 {
-    if (d != 0 && m != 0 && a != 0)
+    if (dia_ != 0 && mes_ != 0 && anno_ != 0)
         validar();
 
     else
@@ -50,7 +48,7 @@ Fecha::Fecha(char *cad) : dia_(0), mes_(0), anno_(0), actual(false)
 
 void Fecha::aumentar_dias(int n)
 {
-    struct std::tm nuevo_tm;
+    struct std::tm nuevo_tm { 0 };
 
     nuevo_tm.tm_sec = 0;    // Segundos
     nuevo_tm.tm_min = 0;    // Minutos
@@ -197,7 +195,7 @@ Fecha::operator const char* () const
             "diciembre"
         };
 
-        struct std::tm * nuevo_tm = new std::tm;
+        struct std::tm * nuevo_tm = new std::tm{ 0 };
 
         nuevo_tm->tm_sec = 0;    // Segundos
         nuevo_tm->tm_min = 0;    // Minutos
@@ -206,10 +204,11 @@ Fecha::operator const char* () const
         nuevo_tm->tm_mon = mes_ - 1;
         nuevo_tm->tm_year = anno_ - 1900;
 
-        std::time_t tiempo = mktime(nuevo_tm);
+        mktime(nuevo_tm);
 
         sprintf(crep, "%s %i de %s de %i", dia[nuevo_tm->tm_wday], dia_, mes[mes_ - 1], anno_);
         actual = true;
+        delete nuevo_tm;
     }
 
     return crep;

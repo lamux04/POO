@@ -39,7 +39,7 @@ private:
         mes_,
         anno_;
     mutable char crep[40];
-    mutable bool actual;
+    mutable bool actual = false;
     void validar() const;
     void aumentar_dias(int n);
 };
