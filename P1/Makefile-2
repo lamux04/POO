@@ -1,0 +1,18 @@
+all: prueba
+
+CXX = c++
+
+fecha.o: fecha.cpp fecha.hpp
+	$(CXX) -c fecha.cpp
+
+cadena.o: cadena.cpp cadena.hpp
+	$(CXX) -c cadena.cpp
+
+main.o: main.cpp fecha.hpp cadena.hpp
+	$(CXX) -c main.cpp
+
+prueba: fecha.o main.o cadena.o
+	$(CXX) -o prueba fecha.o main.o cadena.o
+
+clean:
+	rm *.o prueba
