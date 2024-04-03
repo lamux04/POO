@@ -256,6 +256,7 @@ char * Fecha::Invalida::por_que() const
 std::istream& operator>>(std::istream& is, Fecha& A)
 {
     char cad[11];
+    is.width(11);
     is >> cad;
     try
     {

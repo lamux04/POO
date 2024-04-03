@@ -213,8 +213,16 @@ std::istream& operator>>(std::istream& is, Cadena& A)
 {
     int j = 0;
     char cad[33], cad2[33];
-    is.width(32);
-    is >> cad;
+    cad[0] = '\0';
+    // is.width(33);
+    // is >> cad;
+    char c;
+    while (is.get(c) && isspace(c));
+    if (is)
+    {
+        cad[0] = c;
+        is.get(cad + 1, 32, ' ');
+    }
     for (int i = 0; i <= 32 && cad[i] != '\0' && !(j != 0 && isspace(cad[i])); ++i)
         if (!isspace(cad[i]))
         {
@@ -222,6 +230,10 @@ std::istream& operator>>(std::istream& is, Cadena& A)
             ++j;
         }
     cad2[j] = '\0';
-    A = Cadena(cad2);
+
+    if (j == 0)
+        A = Cadena();
+    else
+        A = Cadena(cad2);
     return is;
 }
