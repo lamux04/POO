@@ -15,7 +15,7 @@ public:
     explicit Fecha(int d = 0, int m = 0, int a = 0);
     Fecha(char *cad);
 
-    explicit operator const char* () const;
+    const char* cadena() const;
 
     /* METODOS PUBLICOS */
     int dia() const noexcept { return dia_; };

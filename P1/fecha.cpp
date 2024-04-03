@@ -1,6 +1,7 @@
 #include <ctime>
 #include <iostream>
 #include <cstdio>
+#include <cstring>
 
 #include "fecha.hpp"
 
@@ -33,20 +34,10 @@ Fecha::Fecha(char *cad) : dia_(0), mes_(0), anno_(0), actual(false)
 {
     dia_ = -1; mes_ = -1; anno_ = -1;
 
-    if (sscanf(cad, "%d/%d/%d", &dia_, &mes_, &anno_) != 3)
+    if (/*std::strlen(cad) >= 10 ||*/ sscanf(cad, "%d/%d/%d", &dia_, &mes_, &anno_) != 3)
         throw Invalida("Formato de fecha inválido");
 
-
-    // Calculamos el tiempo del sistema
-    std::time_t tiempo_calendario = std::time(nullptr);
-    std::tm* tiempo_descompuesto = std::localtime(&tiempo_calendario);
-
-    if (dia_ == 0) dia_ = tiempo_descompuesto->tm_mday;
-    if (mes_ == 0) mes_ = tiempo_descompuesto->tm_mon + 1;
-    if (anno_ == 0) anno_ = tiempo_descompuesto->tm_year + 1900;
-
-
-    validar();
+    *this = Fecha(dia_, mes_, anno_);
 }
 
 void Fecha::aumentar_dias(int n)
@@ -169,7 +160,7 @@ bool operator>=(const Fecha& A, const Fecha& B)
     return !(A < B);
 }
 
-Fecha::operator const char* () const
+const char* Fecha::cadena() const
 {
     if (!actual)
     {
@@ -280,6 +271,6 @@ std::istream& operator>>(std::istream& is, Fecha& A)
 
 std::ostream& operator<<(std::ostream& os, const Fecha& A)
 {
-    os << (const char*)A;
+    os << A.cadena();
     return os;
 }

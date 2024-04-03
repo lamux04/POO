@@ -2,6 +2,7 @@
 #include <cstring>
 #include <stdexcept>
 #include <iostream>
+#include <iterator>
 
 #include "cadena.hpp"
 
@@ -32,6 +33,13 @@ Cadena::Cadena(const Cadena& A) : tam_(A.tam_)
     }
 }
 
+Cadena::Cadena(Cadena&& A) : tam_(A.tam_)
+{
+    s_ = A.s_;
+    A.tam_ = 0;
+    A.s_ = vacia;
+}
+
 Cadena::Cadena(const char *cad) : tam_(strlen(cad))
 {
     if (tam_ == 0)
@@ -58,6 +66,19 @@ Cadena& Cadena::operator=(const Cadena& A)
         tam_ = A.tam_;
         if (t != vacia)
             delete[] t;
+    }
+
+    return *this;
+}
+
+Cadena& Cadena::operator=(Cadena&& A)
+{
+    if (this != &A)
+    {
+        s_ = A.s_;
+        tam_ = A.tam_;
+        A.s_ = vacia;
+        A.tam_ = 0;
     }
 
     return *this;
@@ -182,7 +203,7 @@ Cadena Cadena::substr(int indice, int tama) const
 
 // P1
 
-std::ostream& operator<<(std::ostream& os, Cadena& A)
+std::ostream& operator<<(std::ostream& os, const Cadena& A)
 {
     os << A.s_;
     return os;
@@ -192,8 +213,9 @@ std::istream& operator>>(std::istream& is, Cadena& A)
 {
     int j = 0;
     char cad[33], cad2[33];
+    is.width(32);
     is >> cad;
-    for (int i = 0; cad[i] != '\0' && !(j != 0 && isspace(cad[i])); ++i)
+    for (int i = 0; i <= 32 && cad[i] != '\0' && !(j != 0 && isspace(cad[i])); ++i)
         if (!isspace(cad[i]))
         {
             cad2[j] = cad[i];
