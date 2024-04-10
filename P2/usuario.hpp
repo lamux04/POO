@@ -69,9 +69,10 @@ private:
     Clave contrasenna_;
     Tarjetas tarjetas_;
     Articulos articulos_;
+
 };
 
-void mostrar_carro(ostream&, Usuario&);
+void mostrar_carro(std::ostream&, Usuario&);
 
 class Usuario::Id_ducplicado
 {
