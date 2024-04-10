@@ -1,0 +1,85 @@
+#ifndef USUARIO_HPP_
+#define USUARIO_HPP_
+
+class Cadena;
+class Numero;
+class Tarjeta;
+class Articulo;
+
+class Clave
+{
+public:
+    class Incorrecta;
+    enum Razon { CORTA, ERROR_CRYPT };
+    Clave(const char* cad);
+    Cadena clave() const noexcept { return clave_; }
+    bool verifica(const char* cad) const;
+
+private:
+    Cadena clave_;
+};
+
+class Clave::Incorrecta
+{
+public:
+    Incorrecta(Razon razon_) : razon_(razon_) {}
+    Razon razon() const noexcept { return razon_; }
+private:
+    Razon razon_;
+};
+
+class Usuario
+{
+public:
+    typedef std::map<Numero, Tarjeta*> Tarjetas;
+    typedef std::unordered_map<Articulo*, unsigned int> Articulos;
+
+    class Id_ducplicado;
+
+    Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cadena& apellidos_, const Cadena& direccion_, const Clave& clave_);
+
+    Usuario(const Usuario&) = delete;
+    Usuario& operator=(const Usuario&) = delete;
+
+    // OBSERVADORES
+    const Cadena& id() const noexcept { return identificador_; }
+    const Cadena& nombre() const noexcept { return nombre_; }
+    const Cadena& apellidos() const noexcept { return apellidos_; }
+    const Cadena& direccion() const noexcept { return direccion_; }
+    const Tarjetas& tarjetas() const noexcept { return tarjetas_; }
+    const Articulos& compra() const noexcept { return articulos_; }
+
+    // ASOCIACIÓN CON TARJETA
+    void es_titular_de(const Tarjeta&);
+    void no_es_titular_de(const Tarjeta&);
+
+    // DESTRUCTOR
+    ~Usuario();
+
+    // ASOCIACIÓN CON ARTÍCULO
+    void compra(Articulo&, unsigned int cantidad = 1);
+    const Articulos& compra();
+    void vaciar_carro();
+    unsigned n_articulos() const;
+
+    friend std::ostream& operator<<(std::ostream&, const Usuario&);
+
+private:
+    const Cadena identificador_, nombre_, apellidos_, direccion_;
+    Clave contrasenna_;
+    Tarjetas tarjetas_;
+    Articulos articulos_;
+};
+
+void mostrar_carro(ostream&, Usuario&);
+
+class Usuario::Id_ducplicado
+{
+public:
+    Id_ducplicado(const Cadena& cad) : idd_(cad) {}
+    const Cadena& idd() const noexcept { return idd_; }
+private:
+    Cadena idd_;
+};
+
+#endif
