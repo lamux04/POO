@@ -18,4 +18,5 @@ std::ostream& operator<<(std::ostream& os, const Articulo& A)
 {
     os << "[" << A.referencia() << "] \"" << A.titulo() << "\", "
         << A.f_publi().anno() << ". " << std::round(A.precio() / 100.0) * 100.0 << " €";
+    return os;
 }

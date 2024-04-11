@@ -1,6 +1,8 @@
 #ifndef TARJETA_HPP_
 #define TARJETA_HPP_
 
+#include "usuario.hpp"
+
 class Cadena;
 
 class Numero
@@ -10,12 +12,12 @@ public:
 
     enum Razon { LONGITUD, DIGITOS, NO_VALIDO };
     Numero(Cadena num);
-    operator const char*();
-    friend bool operator<(const Numero&, const Numero&);
+    operator const char*() const;
 
 private:
     Cadena numero_;
 };
+bool operator<(const Numero&, const Numero&);
 
 class Numero::Incorrecto
 {
@@ -26,40 +28,43 @@ private:
     Razon razon_;
 };
 
-class Usuario;
 class Fecha;
 
 class Tarjeta
 {
 public:
+    friend class Usuario;
     enum Tipo { Otro, VISA, Mastercard, Maestro, JCB, AmericanExpress };
     class Caducada;
     class Num_duplicado;
-    Tarjeta(const Numero&, const Usuario&, const Fecha&);
+    Tarjeta(const Numero&, Usuario&, const Fecha&);
     Tarjeta(const Tarjeta&) = delete;
     Tarjeta& operator=(const Tarjeta&) = delete;
 
     // OBSERVADORES
     const Numero& numero() const noexcept { return numero_; }
-    const Usuario& titular() const noexcept { return titular_; }
+    const Usuario& titular() const noexcept { return *titular_; }
     const Fecha& caducidad() const noexcept { return caducidad_; }
     bool activa() const noexcept { return activa_; }
     Tipo tipo() const noexcept;
 
     // METODOS
     bool activa(bool activada) noexcept { return activa_ = activada; }
-    void anular_titular();
 
     ~Tarjeta();
     friend std::ostream& operator<<(std::ostream&, const Tarjeta&);
-    friend bool operator<(const Tarjeta&, const Tarjeta&);
 
 private:
     const Numero numero_;
-    const Usuario titular_;
+    const Usuario *titular_;
     const Fecha caducidad_;
     bool activa_;
+    static std::unordered_set<Numero> nums;
+    typedef std::unordered_set<Numero>::iterator tipoIt;
+    void anula_titular();
 };
+
+std::ostream& operator<<(std::ostream& os, Tarjeta::Tipo);
 
 class Tarjeta::Caducada
 {
@@ -78,5 +83,10 @@ public:
 private:
     Numero numero;
 };
+
+inline bool operator<(const Tarjeta& A, const Tarjeta& B)
+{
+    return A < B;
+}
 
 #endif

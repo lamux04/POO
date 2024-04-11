@@ -1,5 +1,6 @@
 #include <cstddef>
 #include <cstring>
+#include <string>
 #include <stdexcept>
 #include <iostream>
 #include <iterator>

@@ -1,6 +1,11 @@
 #ifndef USUARIO_HPP_
 #define USUARIO_HPP_
 
+#include <map>
+#include <unordered_map>
+#include <unordered_set>
+#include "cadena.hpp"
+
 class Cadena;
 class Numero;
 class Tarjeta;

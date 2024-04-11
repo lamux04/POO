@@ -5,8 +5,8 @@
 #include <cstring>
 #include <unistd.h>
 
-#include "articulo.hpp"
 #include "cadena.hpp"
+#include "articulo.hpp"
 #include "tarjeta.hpp"
 
 #include "usuario.hpp"
@@ -57,10 +57,10 @@ void Usuario::no_es_titular_de(Tarjeta& tarjeta)
 Usuario::~Usuario()
 {
     for (auto i : tarjetas_)
-        i.second->anular_titular();
+        i.second->anula_titular();
 }
 
-void Usuario::compra(Articulo& articulo, unsigned int cantidad = 1)
+void Usuario::compra(Articulo& articulo, unsigned int cantidad)
 {
     articulos_[&articulo] = cantidad;
     if (cantidad == 0)
@@ -87,6 +87,7 @@ std::ostream& operator<<(std::ostream& os, const Usuario& usuario)
 
     for (auto i : usuario.tarjetas_)
         os << i.second << endl;
+    return os;
 }
 
 void mostrar_carro(std::ostream& os, Usuario& usuario)
