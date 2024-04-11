@@ -1,11 +1,36 @@
 #include <map>
-#include <iostream>
 #include <unordered_map>
+#include <unordered_set>
+#include <iostream>
+#include <cstring>
+#include <unistd.h>
 
 #include "articulo.hpp"
 #include "cadena.hpp"
+#include "tarjeta.hpp"
 
 #include "usuario.hpp"
+
+Clave::Clave(const char* cad)
+{
+    // Tamano correcto
+    if (std::strlen(cad) < 5)
+        throw Clave::Incorrecta(CORTA);
+
+    try
+    {
+        clave_ = crypt(cad, "aa");
+    }
+    catch (...)
+    {
+        throw Clave::Incorrecta(ERROR_CRYPT);
+    }
+}
+
+bool Clave::verifica(const char* cad) const
+{
+    return strcmp(crypt(cad, "aa"), (const char*)clave_) == 0;
+}
 
 Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cadena& apellidos_, const Cadena& direccion_, const Clave& clave_) :
     identificador_(identificador_),
@@ -14,6 +39,65 @@ Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cade
     direccion_(direccion_),
     contrasenna_(clave_)
 {
-    // COMPROBAR QUE EL USUARIO SEA CORRECTO
+    std::pair<tipoIt, bool> res = ids.insert(identificador_);
+    if (!res.second)
+        throw Id_ducplicado(identificador_);
 }
 
+void Usuario::es_titular_de(Tarjeta& tarjeta)
+{
+    tarjetas_.insert(std::make_pair(tarjeta.numero(), &tarjeta));
+}
+
+void Usuario::no_es_titular_de(Tarjeta& tarjeta)
+{
+    tarjetas_.erase(tarjeta.numero());
+}
+
+Usuario::~Usuario()
+{
+    for (auto i : tarjetas_)
+        i.second->anular_titular();
+}
+
+void Usuario::compra(Articulo& articulo, unsigned int cantidad = 1)
+{
+    articulos_[&articulo] = cantidad;
+    if (cantidad == 0)
+        articulos_.erase(&articulo);
+}
+
+void Usuario::vaciar_carro()
+{
+    articulos_.clear();
+}
+
+unsigned Usuario::n_articulos() const
+{
+    articulos_.size();
+}
+
+std::ostream& operator<<(std::ostream& os, const Usuario& usuario)
+{
+    using namespace std;
+    os
+        << usuario.identificador_ << " [" << usuario.contrasenna_.clave() << "] " << usuario.nombre_ << " " << usuario.apellidos_ << endl
+        << usuario.direccion_ << endl
+        << "Tarjetas:" << endl;
+
+    for (auto i : usuario.tarjetas_)
+        os << i.second << endl;
+}
+
+void mostrar_carro(std::ostream& os, Usuario& usuario)
+{
+    using namespace std;
+    os
+        << "Carrito de compra de " << usuario.id() << " [Artículos: " << usuario.n_articulos() << "]" << endl
+        << " Cant.  Artículo" << endl;
+    os.fill('=');
+    os.width(60);
+    os << endl;
+    for (auto i : usuario.compra())
+        os << "  " << i.second << "   " << i.first << endl;
+}

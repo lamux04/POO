@@ -129,6 +129,7 @@
     "set": "cpp",
     "regex": "cpp",
     "future": "cpp",
-    "any": "cpp"
-  }
+    "any": "cpp",
+    "unordered_set": "cpp"
+}
 }

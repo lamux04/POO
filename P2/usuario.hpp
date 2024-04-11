@@ -50,15 +50,15 @@ public:
     const Articulos& compra() const noexcept { return articulos_; }
 
     // ASOCIACIÓN CON TARJETA
-    void es_titular_de(const Tarjeta&);
-    void no_es_titular_de(const Tarjeta&);
+    void es_titular_de(Tarjeta&);
+    void no_es_titular_de(Tarjeta&);
 
     // DESTRUCTOR
     ~Usuario();
 
     // ASOCIACIÓN CON ARTÍCULO
     void compra(Articulo&, unsigned int cantidad = 1);
-    const Articulos& compra();
+    const Articulos& compra() { return articulos_; }
     void vaciar_carro();
     unsigned n_articulos() const;
 
@@ -69,7 +69,8 @@ private:
     Clave contrasenna_;
     Tarjetas tarjetas_;
     Articulos articulos_;
-
+    static std::unordered_set<Cadena> ids;
+    typedef std::unordered_set<Cadena>::iterator tipoIt;
 };
 
 void mostrar_carro(std::ostream&, Usuario&);
