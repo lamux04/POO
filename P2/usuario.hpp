@@ -39,7 +39,7 @@ public:
     typedef std::map<Numero, Tarjeta*> Tarjetas;
     typedef std::unordered_map<Articulo*, unsigned int> Articulos;
 
-    class Id_ducplicado;
+    class Id_duplicado;
 
     Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cadena& apellidos_, const Cadena& direccion_, const Clave& clave_);
 
@@ -78,12 +78,12 @@ private:
     typedef std::unordered_set<Cadena>::iterator tipoIt;
 };
 
-void mostrar_carro(std::ostream&, Usuario&);
+void mostrar_carro(std::ostream&, const Usuario&);
 
-class Usuario::Id_ducplicado
+class Usuario::Id_duplicado
 {
 public:
-    Id_ducplicado(const Cadena& cad) : idd_(cad) {}
+    Id_duplicado(const Cadena& cad) : idd_(cad) {}
     const Cadena& idd() const noexcept { return idd_; }
 private:
     Cadena idd_;

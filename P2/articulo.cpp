@@ -17,6 +17,6 @@ Articulo::Articulo(const Cadena& referencia, const Cadena& titulo, const Fecha& 
 std::ostream& operator<<(std::ostream& os, const Articulo& A)
 {
     os << "[" << A.referencia() << "] \"" << A.titulo() << "\", "
-        << A.f_publi().anno() << ". " << std::round(A.precio() / 100.0) * 100.0 << " €";
+        << A.f_publi().anno() << ". " << std::ceil(A.precio() * 100.0) / 100.0 << " €";
     return os;
 }

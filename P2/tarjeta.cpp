@@ -3,6 +3,7 @@
 #include <cstddef>
 #include <cstring>
 #include <set>
+#include <cmath>
 
 #include "cadena.hpp"
 #include "usuario.hpp"
@@ -21,7 +22,7 @@ Numero::Numero(Cadena num)
     bool valido = true;
     for (int i = 0; i < n && valido; ++i)
     {
-        if (num[i] != ' ')
+        if (num[i] != ' ' && num[i] != '\v' && num[i] != '\r' && num[i] != '\t' && num[i] != '\f')
         {
             if (!std::isdigit(num[i]))
                 valido = false;
@@ -29,6 +30,7 @@ Numero::Numero(Cadena num)
             ++j;
         }
     }
+    cad[j] = '\0';
     if (!valido)
         throw Incorrecto(DIGITOS);
     numero_ = Cadena(cad);
@@ -45,7 +47,20 @@ Numero::operator const char*() const
 
 bool operator<(const Numero& n1, const Numero& n2)
 {
-    return strcmp(n1, n2) < 0;
+    long long int num1 = 0, num2 = 0;
+    int i = 0;
+    for (Cadena::const_reverse_iterator p = n1.numero_.crbegin(); p != n1.numero_.crend(); ++p)
+    {
+        num1 += (*p - '0') * pow(10, i);
+        ++i;
+    }
+    i = 0;
+    for (Cadena::const_reverse_iterator p = n2.numero_.crbegin(); p != n2.numero_.crend(); ++p)
+    {
+        num2 += (*p - '0') * pow(10, i);
+        ++i;
+    }
+    return num1 < num2;
 }
 
 Tarjeta::Tarjeta(const Numero& numero, Usuario& usuario, const Fecha& fecha) :
@@ -92,6 +107,7 @@ Tarjeta::~Tarjeta()
         const_cast<Usuario*>(titular_)->no_es_titular_de(*this);
         titular_ = nullptr;
     }
+    nums.erase(numero_);
 }
 
 std::ostream& operator<<(std::ostream& os, Tarjeta::Tipo tipo)
@@ -123,15 +139,41 @@ std::ostream& operator<<(std::ostream& os, Tarjeta::Tipo tipo)
 std::ostream& operator<<(std::ostream& os, const Tarjeta& tarjeta)
 {
     using namespace std;
+
+    // Nombres en mayuscula
+    char *nombre = new char[tarjeta.titular_->nombre().length()];
+    int j = 0;
+    for (auto i : tarjeta.titular_->nombre())
+    {
+        nombre[j] = toupper(i);
+        ++j;
+    }
+    char *apellidos = new char[tarjeta.titular_->apellidos().length()];
+    j = 0;
+    for (auto i : tarjeta.titular_->apellidos())
+    {
+        apellidos[j] = toupper(i);
+        ++j;
+    }
+
+    // Caducidad
+
     os
         << " ---------------------------- " << endl
         << "/                            \\" << endl
         << "|  " << tarjeta.tipo() << endl
         << "|  " << tarjeta.numero_ << endl
-        << "|  " << tarjeta.titular_->nombre() << " " << tarjeta.titular_->apellidos() << endl
-        << "|  Caduca: " << tarjeta.caducidad_.mes() << "/" << tarjeta.caducidad_.anno() % 100 << endl
+        << "|  " << nombre << " " << apellidos << endl
+        << "|  Caduca: ";
+
+    if (tarjeta.caducidad_.mes() < 10)
+        os << '0';
+
+    os << tarjeta.caducidad_.mes() << "/" << tarjeta.caducidad_.anno() % 100 << endl
         << "\\___________________________/" << endl;
 
+    delete[] nombre;
+    delete[] apellidos;
     return os;
 }
 

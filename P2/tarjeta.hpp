@@ -15,11 +15,11 @@ public:
     enum Razon { LONGITUD, DIGITOS, NO_VALIDO };
     Numero(Cadena num);
     operator const char*() const;
+    friend bool operator<(const Numero&, const Numero&);
 
 private:
     Cadena numero_;
 };
-bool operator<(const Numero&, const Numero&);
 
 class Numero::Incorrecto
 {
@@ -45,7 +45,7 @@ public:
 
     // OBSERVADORES
     const Numero& numero() const noexcept { return numero_; }
-    const Usuario& titular() const noexcept { return *titular_; }
+    const Usuario* titular() const noexcept { return titular_; }
     const Fecha& caducidad() const noexcept { return caducidad_; }
     bool activa() const noexcept { return activa_; }
     Tipo tipo() const noexcept;
@@ -88,7 +88,7 @@ private:
 
 inline bool operator<(const Tarjeta& A, const Tarjeta& B)
 {
-    return A < B;
+    return A.numero() < B.numero();
 }
 
 bool luhn(const Cadena& numero);

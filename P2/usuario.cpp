@@ -16,7 +16,7 @@ std::unordered_set<Cadena> Usuario::ids{};
 Clave::Clave(const char* cad)
 {
     // Tamano correcto
-    if (std::strlen(cad) < 5)
+    if (strlen(cad) < 5)
         throw Clave::Incorrecta(CORTA);
 
     try
@@ -43,7 +43,7 @@ Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cade
 {
     std::pair<tipoIt, bool> res = Usuario::ids.insert(identificador_);
     if (!res.second)
-        throw Id_ducplicado(identificador_);
+        throw Id_duplicado(identificador_);
 }
 
 void Usuario::es_titular_de(Tarjeta& tarjeta)
@@ -53,13 +53,14 @@ void Usuario::es_titular_de(Tarjeta& tarjeta)
 
 void Usuario::no_es_titular_de(Tarjeta& tarjeta)
 {
-    tarjetas_.erase(tarjeta.numero());
+    tarjetas_.erase(tarjeta.numero_);
 }
 
 Usuario::~Usuario()
 {
     for (auto i : tarjetas_)
         i.second->anula_titular();
+    ids.erase(identificador_);
 }
 
 void Usuario::compra(Articulo& articulo, unsigned int cantidad)
@@ -76,7 +77,7 @@ void Usuario::vaciar_carro()
 
 unsigned Usuario::n_articulos() const
 {
-    articulos_.size();
+    return articulos_.size();
 }
 
 std::ostream& operator<<(std::ostream& os, const Usuario& usuario)
@@ -88,19 +89,22 @@ std::ostream& operator<<(std::ostream& os, const Usuario& usuario)
         << "Tarjetas:" << endl;
 
     for (auto i : usuario.tarjetas_)
-        os << i.second << endl;
+        os << *i.second << endl;
     return os;
 }
 
-void mostrar_carro(std::ostream& os, Usuario& usuario)
+// ERRRORRRRRRRR AQUI
+void mostrar_carro(std::ostream& os, const Usuario& usuario)
 {
     using namespace std;
+    os << endl;
     os
         << "Carrito de compra de " << usuario.id() << " [Artículos: " << usuario.n_articulos() << "]" << endl
         << " Cant.  Artículo" << endl;
     os.fill('=');
     os.width(60);
+    os << "";
     os << endl;
     for (auto i : usuario.compra())
-        os << "  " << i.second << "   " << i.first << endl;
+        os << "  " << i.second << "   " << *(i.first) << endl;
 }
