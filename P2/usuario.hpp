@@ -2,11 +2,11 @@
 #define USUARIO_HPP_
 
 #include <map>
+#include "cadena.hpp"
 #include <unordered_map>
 #include <unordered_set>
-#include "cadena.hpp"
+#include <map>
 
-class Cadena;
 class Numero;
 class Tarjeta;
 class Articulo;

@@ -1,9 +1,11 @@
 #ifndef TARJETA_HPP_
 #define TARJETA_HPP_
 
+#include <set>
+#include "cadena.hpp"
 #include "usuario.hpp"
 
-class Cadena;
+class Usuario;
 
 class Numero
 {
@@ -59,8 +61,8 @@ private:
     const Usuario *titular_;
     const Fecha caducidad_;
     bool activa_;
-    static std::unordered_set<Numero> nums;
-    typedef std::unordered_set<Numero>::iterator tipoIt;
+    static std::set<Numero> nums;
+    typedef std::set<Numero>::iterator tipoIt;
     void anula_titular();
 };
 
@@ -88,5 +90,7 @@ inline bool operator<(const Tarjeta& A, const Tarjeta& B)
 {
     return A < B;
 }
+
+bool luhn(const Cadena& numero);
 
 #endif

@@ -2,31 +2,14 @@
 #include <cctype>
 #include <cstddef>
 #include <cstring>
-#include <unordered_set>
+#include <set>
 
 #include "cadena.hpp"
 #include "usuario.hpp"
 #include "fecha.hpp"
 #include "tarjeta.hpp"
 
-bool luhn(const Cadena& numero)
-{
-    size_t n = numero.length();
-    size_t suma = 0;
-    bool alt = false;
-    for (int i = n - 1; i > -1; --i) {
-        n = numero[size_t(i)] - '0';
-        if (alt) {
-            n *= 2;
-            if (n > 9)
-                n = (n % 10) + 1;
-        }
-        alt = !alt;
-        suma += n;
-    }
-    return !(suma % 10);
-}
-
+std::set<Numero> Tarjeta::nums{};
 
 Numero::Numero(Cadena num)
 {
@@ -72,7 +55,7 @@ Tarjeta::Tarjeta(const Numero& numero, Usuario& usuario, const Fecha& fecha) :
         throw Caducada(caducidad_);
     usuario.es_titular_de(*this);
 
-    std::pair<tipoIt, bool> res = nums.insert(numero_);
+    std::pair<tipoIt, bool> res = Tarjeta::nums.insert(numero_);
     if (!res.second)
         throw Num_duplicado(numero_);
 }

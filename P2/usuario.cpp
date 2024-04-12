@@ -11,6 +11,8 @@
 
 #include "usuario.hpp"
 
+std::unordered_set<Cadena> Usuario::ids{};
+
 Clave::Clave(const char* cad)
 {
     // Tamano correcto
@@ -39,7 +41,7 @@ Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cade
     direccion_(direccion_),
     contrasenna_(clave_)
 {
-    std::pair<tipoIt, bool> res = ids.insert(identificador_);
+    std::pair<tipoIt, bool> res = Usuario::ids.insert(identificador_);
     if (!res.second)
         throw Id_ducplicado(identificador_);
 }

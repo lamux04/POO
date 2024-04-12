@@ -4,9 +4,6 @@
 #include "cadena.hpp"
 #include "fecha.hpp"
 
-class Cadena;
-class Fecha;
-
 class Articulo
 {
 public:
