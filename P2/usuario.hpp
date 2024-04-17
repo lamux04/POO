@@ -22,6 +22,7 @@ public:
 
 private:
     Cadena clave_;
+    static const char caracteres[];
 };
 
 class Clave::Incorrecta
@@ -63,7 +64,6 @@ public:
 
     // ASOCIACIÓN CON ARTÍCULO
     void compra(Articulo&, unsigned int cantidad = 1);
-    const Articulos& compra() { return articulos_; }
     void vaciar_carro();
     unsigned n_articulos() const;
 
