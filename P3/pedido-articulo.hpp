@@ -24,8 +24,31 @@ std::ostream& operator<<(std::ostream&, const LineaPedido&);
 class Pedido_Articulo
 {
 public:
-    void asocia(Pedido&, Articulo&);
+    class OrdenaPedidos
+    {
+    public:
+        bool operator () (Pedido* A, Pedido* B) const
+        {
+            return A->numero() < B->numero();
+        }
+    };
+    class OrdenaArticulos
+    {
+    public:
+        bool operator () (Articulo* A, Articulo* B) const
+        {
+            return A->referencia() < B->referencia();
+        }
+    };
+    typedef std::map<Articulo*, LineaPedido, OrdenaArticulos> ItemsPedido;
+    typedef std::map<Pedido*, LineaPedido, OrdenaPedidos> Pedidos;
+    void pedir(Pedido&, Articulo&, double, int = 1);
+    void pedir(Articulo&, Pedido&, double, int = 1);
+    const ItemsPedido& detalle(Pedido& P) const;
+    const Pedidos& ventas(Articulo&) const;
 private:
+    std::map<Pedido*, ItemsPedido, OrdenaPedidos> directa;
+    std::map<Articulo*, Pedidos, OrdenaArticulos> inversa;
 
 };
 

@@ -37,7 +37,7 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
         importe_total += i.first->precio() * i.second;
         i.first->stock() -= i.second;
 
-        P_A.asocia(*this, *(i.first));
+        P_A.pedir(*this, *(i.first), i.first->precio(), i.second);
     }
 
     U_P.asocia(usuario, *this);
