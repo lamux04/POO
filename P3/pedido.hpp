@@ -22,7 +22,7 @@ public:
     const Tarjeta* tarjeta() const { return tarjeta_; }
     const Fecha& fecha() const { return fecha_; }
     double total() const { return importe_total; }
-    int n_total_pedidos() const { return total_pedidos; }
+    static int n_total_pedidos() { return total_pedidos; }
 
 private:
     int numero_;
@@ -35,28 +35,28 @@ private:
 class Pedido::Vacio
 {
 public:
-    Vacio(Usuario& U) : usuario_(&U) {}
-    Usuario* usuario() { return usuario_; }
+    Vacio(const Usuario& U) : usuario_(U) {}
+    const Usuario& usuario() const { return usuario_; }
 private:
-    Usuario *usuario_;
+    const Usuario& usuario_;
 };
 
 class Pedido::Impostor
 {
 public:
-    Impostor(Usuario& U) : usuario_(&U) {}
-    Usuario* usuario() { return usuario_; }
+    Impostor(const Usuario& U) : usuario_(U) {}
+    const Usuario& usuario() const { return usuario_; }
 private:
-    Usuario *usuario_;
+    const Usuario& usuario_;
 };
 
 class Pedido::SinStock
 {
 public:
-    SinStock(Articulo& A) : articulo_(&A) {}
-    Articulo* articulo() { return articulo_; }
+    SinStock(const Articulo& A) : articulo_(A) {}
+    const Articulo& articulo() const { return articulo_; }
 private:
-    Articulo *articulo_;
+    const Articulo& articulo_;
 };
 
 std::ostream& operator<<(std::ostream& os, const Pedido& P);

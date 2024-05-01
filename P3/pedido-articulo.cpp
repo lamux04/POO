@@ -72,35 +72,35 @@ std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::Pedidos& P)
     os << "Total\t" << total << "€\t" << cTotal;
 }
 
-void Pedido_Articulo::mostrarDetallesPedidos() const
+void Pedido_Articulo::mostrarDetallePedidos(std::ostream& os) const
 {
     using namespace std;
     double total = 0;
     for (auto i : directa)
     {
-        cout << "Pedido num. " << i.first->numero() << endl;
-        cout << "Cliente: " << i.first->tarjeta()->titular() << endl;
-        cout << "Fecha: " << i.first->fecha() << endl << endl;
+        os << "Pedido num. " << i.first->numero() << endl;
+        os << "Cliente: " << i.first->tarjeta()->titular() << endl;
+        os << "Fecha: " << i.first->fecha() << endl << endl;
         total += i.first->total();
     }
-    cout << "TOTAL VENTAS          " << total << endl;
+    os << "TOTAL VENTAS          " << total << endl;
 }
 
-void Pedido_Articulo::mostrarVentasArticulos() const
+void Pedido_Articulo::mostrarVentasArticulos(std::ostream& os) const
 {
     using namespace std;
     double total = 0;
     for (auto i : inversa)
     {
         total = 0;
-        cout << "Ventas de [" << i.first->referencia() << "] \"" << i.first->titulo() << "\"" << endl;
+        os << "Ventas de [" << i.first->referencia() << "] \"" << i.first->titulo() << "\"" << endl;
         for (auto j : i.second)
         {
-            cout << "\tPedido num. " << j.first->numero() << endl;
-            cout << "\tCliente: " << j.first->tarjeta()->titular() << endl;
-            cout << "\tFecha: " << j.first->fecha() << endl << endl;
+            os << "\tPedido num. " << j.first->numero() << endl;
+            os << "\tCliente: " << j.first->tarjeta()->titular() << endl;
+            os << "\tFecha: " << j.first->fecha() << endl << endl;
             total += j.first->total();
         }
-        cout << "\tTOTAL VENTAS          " << total << endl << endl;
+        os << "\tTOTAL VENTAS          " << total << endl << endl;
     }
 }

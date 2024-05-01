@@ -6,7 +6,7 @@
  * ©2021 Gerardo - La Gran Unificación
  */
 
-#define P2
+#define P3
 
 #include <iostream>
 #include "fecha.hpp"
@@ -431,7 +431,7 @@ int main()
     }
     catch (Articulo::Autores_vacios) {
         cerr << "Error de artículo: No se puede crear uno anónimo.\n";
-}
+    }
 #endif
 #ifndef P2
     // Por último: impresión del número total de pedidos.

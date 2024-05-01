@@ -49,8 +49,8 @@ public:
     void pedir(Articulo&, Pedido&, double, int = 1);
     const ItemsPedido& detalle(Pedido& P) const;
     const Pedidos& ventas(Articulo&) const;
-    void mostrarDetallesPedidos() const;
-    void mostrarVentasArticulos() const;
+    void mostrarDetallePedidos(std::ostream& os) const;
+    void mostrarVentasArticulos(std::ostream& os) const;
 private:
     std::map<Pedido*, ItemsPedido, OrdenaPedidos> directa;
     std::map<Articulo*, Pedidos, OrdenaArticulos> inversa;

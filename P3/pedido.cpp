@@ -13,13 +13,13 @@ int Pedido::total_pedidos = 0;
 Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, const Tarjeta& tarjeta_, Fecha fecha_)
     : tarjeta_(&tarjeta_), fecha_(fecha_), numero_(total_pedidos), importe_total(0)
 {
+    // Impostor
+    if (usuario.id() != tarjeta_.titular()->id())
+        throw Impostor(usuario);
+
     // Carrito vacio
     if (usuario.compra().empty())
         throw Vacio(usuario);
-
-    // Impostor
-    if (&usuario != tarjeta_.titular())
-        throw Impostor(usuario);
 
     // Tarjeta caducada
     if (fecha_ > tarjeta_.caducidad())
@@ -33,9 +33,13 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     {
         if (i.second > i.first->stock())
         {
-            usuario.vaciar_carro();
             throw SinStock(*(i.first));
         }
+    }
+
+    for (auto i : usuario.compra())
+    {
+        // usuario.vaciar_carro();
         importe_total += i.first->precio() * i.second;
         i.first->stock() -= i.second;
 
@@ -43,7 +47,7 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     }
 
     U_P.asocia(usuario, *this);
-    usuario.vaciar_carro();
+    // usuario.vaciar_carro();
 
     total_pedidos++;
 }
