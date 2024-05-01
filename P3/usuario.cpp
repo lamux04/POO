@@ -68,13 +68,14 @@ Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cade
 void Usuario::es_titular_de(Tarjeta& tarjeta)
 {
     // El titular de la tarjeta es el usuario
-    if (tarjeta.titular() == this)
+    if (tarjeta.titular() == this && tarjeta.activa_)
         tarjetas_.insert(std::make_pair(tarjeta.numero(), &tarjeta));
 }
 
 void Usuario::no_es_titular_de(Tarjeta& tarjeta)
 {
     tarjetas_.erase(tarjeta.numero_);
+    tarjeta.anula_titular();
 }
 
 Usuario::~Usuario()

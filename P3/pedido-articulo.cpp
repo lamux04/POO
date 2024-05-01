@@ -49,6 +49,7 @@ std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::ItemsPedido& I
     }
     os << "===========================================================" << endl;
     os << "Total\t" << total << "€";
+    return os;
 
 }
 
@@ -70,6 +71,7 @@ std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::Pedidos& P)
     }
     os << "===========================================================" << endl;
     os << "Total\t" << total << "€\t" << cTotal;
+    return os;
 }
 
 void Pedido_Articulo::mostrarDetallePedidos(std::ostream& os) const
@@ -97,7 +99,7 @@ void Pedido_Articulo::mostrarVentasArticulos(std::ostream& os) const
         for (auto j : i.second)
         {
             os << "\tPedido num. " << j.first->numero() << endl;
-            os << "\tCliente: " << j.first->tarjeta()->titular() << endl;
+            os << "\tCliente: " << j.first->tarjeta()->titular()->nombre() << endl;
             os << "\tFecha: " << j.first->fecha() << endl << endl;
             total += j.first->total();
         }

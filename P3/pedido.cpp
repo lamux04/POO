@@ -14,7 +14,7 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     : tarjeta_(&tarjeta_), fecha_(fecha_), numero_(total_pedidos), importe_total(0)
 {
     // Impostor
-    if (usuario.id() != tarjeta_.titular()->id())
+    if (&usuario != tarjeta_.titular())
         throw Impostor(usuario);
 
     // Carrito vacio
@@ -47,7 +47,7 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     }
 
     U_P.asocia(usuario, *this);
-    // usuario.vaciar_carro();
+    usuario.vaciar_carro();
 
     total_pedidos++;
 }
@@ -56,14 +56,10 @@ std::ostream& operator<<(std::ostream& os, const Pedido& P)
 {
     using namespace std;
     os << endl;
-    os.width(13);
     os << "Num. pedido: " << P.numero() << endl;
-    os.width(13);
     os << "Fecha: " << P.fecha() << endl;
-    os.width(13);
     os << "Pagado con: " << P.tarjeta()->tipo() << " nº: " << P.tarjeta()->numero() << endl;
-    os.width(13);
     os << "Importe: ";
-    os.precision(2);
     os << P.total() << " €" << endl;
+    return os;
 }
