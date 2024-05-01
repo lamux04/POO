@@ -1,6 +1,9 @@
 #ifndef PEDIDO_ARTICULO_HPP
 #define PEDIDO_ARTICULO_HPP
 
+#include "pedido.hpp"
+#include "articulo.hpp"
+
 class Pedido;
 class Articulo;
 
@@ -46,11 +49,16 @@ public:
     void pedir(Articulo&, Pedido&, double, int = 1);
     const ItemsPedido& detalle(Pedido& P) const;
     const Pedidos& ventas(Articulo&) const;
+    void mostrarDetallesPedidos() const;
+    void mostrarVentasArticulos() const;
 private:
     std::map<Pedido*, ItemsPedido, OrdenaPedidos> directa;
     std::map<Articulo*, Pedidos, OrdenaArticulos> inversa;
 
 };
+
+std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::ItemsPedido& IP);
+std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::Pedidos& IP);
 
 
 #endif

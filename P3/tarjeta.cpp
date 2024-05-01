@@ -4,6 +4,8 @@
 #include <cstring>
 #include <set>
 #include <cmath>
+#include <algorithm>
+#include <functional>
 
 #include "cadena.hpp"
 #include "usuario.hpp"
@@ -12,29 +14,21 @@
 
 std::set<Numero> Tarjeta::nums{};
 
-Numero::Numero(Cadena num)
+Numero::Numero(Cadena num) : numero_(num)
 {
     int n = num.length();
     if (!(n >= 13 && n <= 19))
         throw Incorrecto(LONGITUD);
-    char *cad = new char[num.length()];
-    int j = 0;
-    bool valido = true;
-    for (int i = 0; i < n && valido; ++i)
-    {
-        if (num[i] != ' ' && num[i] != '\v' && num[i] != '\r' && num[i] != '\t' && num[i] != '\f')
-        {
-            if (!std::isdigit(num[i]))
-                valido = false;
-            cad[j] = num[i];
-            ++j;
-        }
-    }
-    cad[j] = '\0';
-    if (!valido)
+
+    Cadena::const_iterator p = std::remove_if(numero_.begin(), numero_.end(), [](char c) { return c == ' '; });
+    numero_ = numero_.substr(0, p - numero_.begin());
+
+    std::unary_negate<EsDigito> noEsDigito((EsDigito()));
+
+    Cadena::const_iterator p2 = std::find_if(numero_.begin(), numero_.end(), noEsDigito);
+
+    if (p2 != numero_.end())
         throw Incorrecto(DIGITOS);
-    numero_ = Cadena(cad);
-    delete[] cad;
 
     if (!luhn(numero_))
         throw Incorrecto(NO_VALIDO);

@@ -11,6 +11,15 @@ class Numero
 {
 public:
     class Incorrecto;
+    class EsDigito
+    {
+    public:
+        using argument_type = char;
+        bool operator () (char c) const
+        {
+            return std::isdigit(c);
+        }
+    };
 
     enum Razon { LONGITUD, DIGITOS, NO_VALIDO };
     Numero(Cadena num);
