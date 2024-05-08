@@ -10,15 +10,15 @@ class Articulo;
 class LineaPedido
 {
 public:
-    explicit LineaPedido(double precio_venta_ = 0.0, int cantidad_ = 1)
-        : precio_venta_(precio_venta_), cantidad_(cantidad_) {}
+    explicit LineaPedido(double precio_venta = 0.0, unsigned cantidad = 1)
+        : precio_venta_(precio_venta), cantidad_(cantidad) {}
 
     double precio_venta() const { return precio_venta_; }
-    int cantidad() const { return cantidad_; }
+    unsigned cantidad() const { return cantidad_; }
 
 private:
     double precio_venta_;
-    int cantidad_;
+    unsigned cantidad_;
 };
 
 std::ostream& operator<<(std::ostream&, const LineaPedido&);
@@ -45,10 +45,10 @@ public:
     };
     typedef std::map<Articulo*, LineaPedido, OrdenaArticulos> ItemsPedido;
     typedef std::map<Pedido*, LineaPedido, OrdenaPedidos> Pedidos;
-    void pedir(Pedido&, Articulo&, double, int = 1);
-    void pedir(Articulo&, Pedido&, double, int = 1);
-    const ItemsPedido& detalle(Pedido& P) const;
-    const Pedidos& ventas(Articulo&) const;
+    void pedir(Pedido&, Articulo&, double, unsigned = 1);
+    void pedir(Articulo&, Pedido&, double, unsigned = 1);
+    const ItemsPedido detalle(Pedido& P) const;
+    const Pedidos ventas(Articulo&) const;
     void mostrarDetallePedidos(std::ostream& os) const;
     void mostrarVentasArticulos(std::ostream& os) const;
 private:

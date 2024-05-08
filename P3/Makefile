@@ -151,7 +151,10 @@ check:
 
 valgrind: ${MAIN_EXE} ${TEST_EXE}
 	valgrind ${VGFLAGS} ./${MAIN_EXE}
+	${MAKE} --no-print-directory --assume-new=${DIRTESTS}/test-caso0-cadena-auto.cpp \
+	        CPPFLAGS="${CPPFLAGS} -DVALGRIND" ${TEST_EXE}
 	valgrind ${VGFLAGS} ./${TEST_EXE} --logger=minimal
+	@touch ${DIRTESTS}/test-caso0-cadena-auto.cpp
 
 # Construye el programa de pruebas de consola.
 

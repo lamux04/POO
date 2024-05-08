@@ -12,7 +12,7 @@ public:
     void asocia(Usuario&, Pedido&);
     void asocia(Pedido&, Usuario&);
 
-    const Pedidos& pedidos(Usuario&) const;
+    const Pedidos pedidos(Usuario&) const;
     Usuario* cliente(Pedido&) const;
 
 private:

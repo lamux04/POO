@@ -568,6 +568,7 @@ FCTMF_FIXTURE_SUITE_BGN(test_p3_asociaciones_e_informes) {
     const Pedido_Articulo& rAsocPedidoArticulo{ *pAsocPedidoArticulo };
     ostringstream os;
     rAsocPedidoArticulo.mostrarVentasArticulos(os);
+
     const string sDetalle{ os.str() };
     /*
       Construimos expresiones regulares que buscan las cantidades

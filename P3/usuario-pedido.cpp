@@ -21,7 +21,7 @@ void Usuario_Pedido::asocia(Pedido& P, Usuario& U)
     asocia(U, P);
 }
 
-const Usuario_Pedido::Pedidos& Usuario_Pedido::pedidos(Usuario& U) const
+const Usuario_Pedido::Pedidos Usuario_Pedido::pedidos(Usuario& U) const
 {
     typename std::map<Usuario*, Pedidos>::const_iterator i = directa.find(&U);
     if (i != directa.end()) return i->second;

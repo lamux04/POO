@@ -50,7 +50,9 @@ bool Clave::verifica(const char* cad) const
     seed[0] = clave_[0];
     seed[1] = clave_[1];
     seed[2] = '\0';
-    return strcmp(crypt(cad, seed), (const char*)clave_) == 0;
+    bool resultado = strcmp(crypt(cad, seed), (const char*)clave_) == 0;
+    delete[] seed;
+    return resultado;
 }
 
 Usuario::Usuario(const Cadena& identificador_, const Cadena& nombre_, const Cadena& apellidos_, const Cadena& direccion_, const Clave& clave_) :
