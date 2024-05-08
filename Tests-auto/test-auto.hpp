@@ -12,7 +12,7 @@
 #ifndef TEST_AUTO_HPP_
 #define TEST_AUTO_HPP_
 
-#define P2
+#define P3
 
 #if !defined(P0) && !defined(P1) && !defined(P2) && !defined(P3) && !defined(P4)
 #error Debe definir Px siendo x | 0 <= x <= 4 el n.º de la práctica a probar
@@ -105,10 +105,10 @@ static InicializaTZ tz;
 */
 class BadRegex : public std::exception {
 public:
-    BadRegex(const char* regex) : regex_(regex) {}
-    const char* regex() const { return regex_; }
+   BadRegex(const char* regex) : regex_(regex) {}
+   const char* regex() const { return regex_; }
 private:
-    const char* regex_;
+   const char* regex_;
 };
 #endif
 
@@ -124,7 +124,7 @@ private:
 */
 inline bool operator ==(const Numero& a, const Numero& b)
 {
-    return !(a < b) && !(b < a);
+   return !(a < b) && !(b < a);
 }
 #endif
 
@@ -135,8 +135,8 @@ inline bool operator ==(const Numero& a, const Numero& b)
 */
 struct sin_separador : std::numpunct<char> {
 protected:
-    virtual string_type do_grouping() const { return "\000"; }
-    virtual char_type   do_decimal_point() const { return ','; }
+   virtual string_type do_grouping() const { return "\000"; }
+   virtual char_type   do_decimal_point() const { return ','; }
 };
 
 /**
@@ -146,10 +146,10 @@ protected:
 template <typename T>
 std::string toString(const T& o)
 {
-    std::ostringstream os;
-    os.imbue(std::locale(std::locale("es_ES.UTF-8"), new sin_separador()));
-    os << o;
-    return os.str();
+   std::ostringstream os;
+   os.imbue(std::locale(std::locale("es_ES.UTF-8"), new sin_separador()));
+   os << o;
+   return os.str();
 }
 
 /**

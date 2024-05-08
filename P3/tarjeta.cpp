@@ -20,7 +20,7 @@ Numero::Numero(Cadena num) : numero_(num)
     if (!(n >= 13 && n <= 19))
         throw Incorrecto(LONGITUD);
 
-    Cadena::const_iterator p = std::remove_if(numero_.begin(), numero_.end(), [](char c) { return c == ' '; });
+    Cadena::const_iterator p = std::remove_if(numero_.begin(), numero_.end(), [](char c) { return c == ' ' || c == '\t' || c == '\v' || c == '\r' || c == '\f'; });
     numero_ = numero_.substr(0, p - numero_.begin());
 
     std::unary_negate<EsDigito> noEsDigito((EsDigito()));

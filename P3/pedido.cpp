@@ -1,4 +1,5 @@
 #include <iostream>
+#include <iomanip>
 
 #include "fecha.hpp"
 #include "tarjeta.hpp"
@@ -11,7 +12,7 @@
 int Pedido::total_pedidos = 0;
 
 Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, const Tarjeta& tarjeta_, Fecha fecha_)
-    : tarjeta_(&tarjeta_), fecha_(fecha_), numero_(total_pedidos), importe_total(0)
+    : tarjeta_(&tarjeta_), fecha_(fecha_), numero_(total_pedidos + 1), importe_total(0)
 {
     // Impostor
     if (&usuario != tarjeta_.titular())
@@ -33,6 +34,7 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     {
         if (i.second > i.first->stock())
         {
+            usuario.vaciar_carro();
             throw SinStock(*(i.first));
         }
     }
@@ -56,10 +58,14 @@ std::ostream& operator<<(std::ostream& os, const Pedido& P)
 {
     using namespace std;
     os << endl;
-    os << "Num. pedido: " << P.numero() << endl;
+    os << "Núm. pedido: " << P.numero() << endl;
     os << "Fecha: " << P.fecha() << endl;
-    os << "Pagado con: " << P.tarjeta()->tipo() << " nº: " << P.tarjeta()->numero() << endl;
+    if (P.tarjeta()->tipo() == Tarjeta::Tipo::Otro)
+        os << "Pagado con: Tipo indeterminado";
+    else
+        os << "Pagado con: " << P.tarjeta()->tipo();
+    os << " nº: " << P.tarjeta()->numero() << endl;
     os << "Importe: ";
-    os << P.total() << " €" << endl;
+    os << std::fixed << std::setprecision(2) << P.total() << " €" << endl;
     return os;
 }

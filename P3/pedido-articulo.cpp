@@ -1,13 +1,14 @@
 #include <iostream>
 #include <map>
+#include <iomanip>
 
 
 #include "pedido-articulo.hpp"
 
 std::ostream& operator<<(std::ostream& os, const LineaPedido& LP)
 {
-    os.precision(2);
-    os << LP.precio_venta() << " €\t" << LP.cantidad();
+    os << std::fixed << std::setprecision(2) << LP.precio_venta() << " €\t" << LP.cantidad();
+    return os;
 }
 
 void Pedido_Articulo::pedir(Pedido& P, Articulo& A, double precio, int cant)
@@ -48,7 +49,7 @@ std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::ItemsPedido& I
         os << "[" << i.first->referencia() << "] \"" << i.first->titulo() << "\"" << endl;
     }
     os << "===========================================================" << endl;
-    os << "Total\t" << total << "€";
+    os << "Total\t" << std::fixed << std::setprecision(2) << total << " €";
     return os;
 
 }
@@ -70,7 +71,7 @@ std::ostream& operator<<(std::ostream& os, const Pedido_Articulo::Pedidos& P)
         os << i.first->fecha() << endl;
     }
     os << "===========================================================" << endl;
-    os << "Total\t" << total << "€\t" << cTotal;
+    os << "Total\t" << std::fixed << std::setprecision(2) << total << " €\t" << cTotal;
     return os;
 }
 
@@ -81,11 +82,12 @@ void Pedido_Articulo::mostrarDetallePedidos(std::ostream& os) const
     for (auto i : directa)
     {
         os << "Pedido num. " << i.first->numero() << endl;
-        os << "Cliente: " << i.first->tarjeta()->titular() << endl;
-        os << "Fecha: " << i.first->fecha() << endl << endl;
+        os << "Cliente: " << *(i.first->tarjeta()->titular()) << endl;
+        os << "Fecha: " << i.first->fecha() << endl;
+        os << i.second << endl << endl;
         total += i.first->total();
     }
-    os << "TOTAL VENTAS          " << total << endl;
+    os << "TOTAL VENTAS          " << std::fixed << std::setprecision(2) << total << " €" << endl;
 }
 
 void Pedido_Articulo::mostrarVentasArticulos(std::ostream& os) const
@@ -101,8 +103,9 @@ void Pedido_Articulo::mostrarVentasArticulos(std::ostream& os) const
             os << "\tPedido num. " << j.first->numero() << endl;
             os << "\tCliente: " << j.first->tarjeta()->titular()->nombre() << endl;
             os << "\tFecha: " << j.first->fecha() << endl << endl;
+            os << i.second;
             total += j.first->total();
         }
-        os << "\tTOTAL VENTAS          " << total << endl << endl;
+        os << "\tTOTAL VENTAS          " << std::fixed << std::setprecision(2) << total << " €" << endl << endl;
     }
 }
