@@ -21,25 +21,6 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     if (&usuario != tarjeta_.titular())
         throw Impostor(usuario);
 
-    // COMPROBAMOS QUE EL LIBRODIGITAL TENGA FECHA DE EXPIRACION CORRECTA
-    auto p = usuario.compra().begin();
-    std::list<Usuario::Articulos::const_iterator> iteradores;
-    while (p != usuario.compra().end())
-    {
-        try {
-            LibroDigital *ld = dynamic_cast<LibroDigital*>(p->first);
-            if (fecha_ > ld->f_expir())
-            {
-                // Quitamos el elemento del carrito
-                iteradores.insert(static_cast<Articulo*>(ld)); // FALLA ESTO
-            }
-        }
-        catch (std::bad_cast)
-        {
-        }
-        ++p;
-    }
-
     // Carrito vacio
     if (usuario.compra().empty())
         throw Vacio(usuario);
@@ -54,39 +35,43 @@ Pedido::Pedido(Usuario_Pedido& U_P, Pedido_Articulo& P_A, Usuario& usuario, cons
     // Introducimos los articulos en el pedido
     for (auto i : usuario.compra())
     {
-        try {
-            ArticuloAlmacenable *aa = dynamic_cast<ArticuloAlmacenable*>(i.first);
-            if (i.second > aa->stock())
-            {
-                usuario.vaciar_carro();
-                throw SinStock(*aa);
-            }
 
-        }
-        catch (const SinStock& e)
+        ArticuloAlmacenable *aa = dynamic_cast<ArticuloAlmacenable*>(i.first);
+        if (aa != nullptr && i.second > aa->stock())
         {
-            throw e;
+            usuario.vaciar_carro();
+            throw SinStock(*aa);
         }
-        catch (std::bad_cast)
-        {
 
-        }
     }
 
     for (auto i : usuario.compra())
     {
         // usuario.vaciar_carro();
-        importe_total += i.first->precio() * i.second;
-        try {
-            ArticuloAlmacenable *aa = dynamic_cast<ArticuloAlmacenable*>(i.first);
-            aa->stock() -= i.second;
-        }
-        catch (std::bad_cast)
+        ArticuloAlmacenable *aa = dynamic_cast<ArticuloAlmacenable*>(i.first);
+        if (aa != nullptr)
         {
+            aa->stock() -= i.second;
+            importe_total += i.first->precio() * i.second;
+            P_A.pedir(*this, *(i.first), i.first->precio(), i.second);
+
+        }
+        else
+        {
+            LibroDigital *ld = dynamic_cast<LibroDigital*>(i.first);
+
+            if (ld->f_expir() >= Fecha())
+            {
+                P_A.pedir(*this, *(i.first), i.first->precio(), i.second);
+                importe_total += i.first->precio() * i.second;
+            }
+
         }
 
-        P_A.pedir(*this, *(i.first), i.first->precio(), i.second);
     }
+
+    if (importe_total == 0)
+        throw Vacio(usuario);
 
     U_P.asocia(usuario, *this);
     usuario.vaciar_carro();

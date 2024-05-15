@@ -20,25 +20,35 @@ Articulo::Articulo(const Autores& autores, const Cadena& referencia, const Caden
 
 std::ostream& operator<<(std::ostream& os, const Articulo& A)
 {
-    os << "[" << A.referencia() << "] \"" << A.titulo() << "\", "
+    os << "[" << A.referencia() << "] " << "\"" << A.titulo() << "\", de ";
+    for (auto i = A.autores().begin(); i != A.autores().end(); ++i)
+    {
+        if (i != A.autores().begin())
+            os << ", ";
+        os << (*i)->apellidos();
+    }
+    os << ". ";
+
+    os
         << A.f_publi().anno() << ". " << std::fixed << std::setprecision(2) << A.precio() << " €" << std::endl;
+    os << "\t";
     A.impresion_especifica(os);
     return os;
 }
 
 void Libro::impresion_especifica(std::ostream& os) const
 {
-    os << "\t" << paginas_ << " págs., " << stock() << " unidades." << std::endl;
+    os << paginas_ << " págs., " << stock() << " unidades.";
 }
 
 void Revista::impresion_especifica(std::ostream& os) const
 {
-    os << "\tNúmero: " << numero_ << ", Periodicidad: " << periodicidad_ << " días." << std::endl;
-    os << "\tPróximo número a partir de: " << f_publi() + periodicidad_ << std::endl;
+    os << "Número: " << numero_ << ", Periodicidad: " << periodicidad_ << " días." << std::endl;
+    os << "\tPróximo número a partir de: " << f_publi() + periodicidad_ << ".";
 }
 
 void LibroDigital::impresion_especifica(std::ostream& os) const
 {
-    os << "\tA la venta hasta el " << f_expir_;
+    os << "A la venta hasta el " << f_expir_ << ".";
 }
 

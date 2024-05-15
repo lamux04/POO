@@ -30,7 +30,8 @@ public:
     double precio() const noexcept { return precio_; }
     double& precio() noexcept { return precio_; };
     virtual void impresion_especifica(std::ostream&) const = 0;
-    Autores autores() const { return autores_; }
+    const Autores& autores() const { return autores_; }
+    virtual ~Articulo() {}
 
 private:
     const Cadena referencia_, titulo_;
